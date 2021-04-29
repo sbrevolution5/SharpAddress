@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using SharpAddress.Models;
 
 namespace SharpAddress.Data
 {
@@ -12,5 +13,7 @@ namespace SharpAddress.Data
             : base(options)
         {
         }
+        public DbSet<SharpAddress.Models.Contact> Contact { get; set; }
+        public DbSet<SharpAddress.Models.Category> Category { get; set; }
     }
 }
