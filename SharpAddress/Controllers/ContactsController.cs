@@ -96,7 +96,7 @@ namespace SharpAddress.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Birthday,Address1,Address2,City,State,ZipCode,HomePhone,WorkPhone,CellPhone,FaxNumber,Email,Notes,CategoryId")] Contact contact, IFormFile ProfilePicture)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Birthday,Address1,Address2,City,State,ZipCode,HomePhone,WorkPhone,CellPhone,FaxNumber,Email,Notes,CategoryId")] Contact contact, IFormFile NewProfilePicture)
         {
             if (id != contact.Id)
             {
@@ -107,11 +107,11 @@ namespace SharpAddress.Controllers
             {
                 try
                 {
-                    if (ProfilePicture is not null)
+                    if (NewProfilePicture is not null)
                     {
 
-                        contact.ContentType = _imageService.RecordContentType(ProfilePicture);
-                        contact.ProfilePicture = await _imageService.EncodeImageAsync(ProfilePicture);
+                        contact.ContentType = _imageService.RecordContentType(NewProfilePicture);
+                        contact.ProfilePicture = await _imageService.EncodeImageAsync(NewProfilePicture);
                     }
                     _context.Update(contact);
                     await _context.SaveChangesAsync();
