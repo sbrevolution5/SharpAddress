@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<SharpAddress.Models.Contact>
-
+@using SharpAddress.Services
+@inject IImageService _imageService
 @{
     ViewData["Title"] = "Index";
 }
@@ -12,6 +13,10 @@
 <table class="table">
     <thead>
         <tr>
+            <th class="text-muted">
+                @* Empty column header for thumbnails *@
+                Thumbnail
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.FirstName)
             </th>
@@ -23,9 +28,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Address1)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address2)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.City)
@@ -40,19 +42,10 @@
                 @Html.DisplayNameFor(model => model.HomePhone)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.WorkPhone)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.CellPhone)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FaxNumber)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Notes)
             </th>
             <th></th>
         </tr>
@@ -60,6 +53,10 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            @* TODO: Small image won't quite display properly *@
+            <td>
+                <img class="img-thumbnail" src="@_imageService.DecodeImage(item.ProfilePicture, item.ContentType)" />
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FirstName)
             </td>
@@ -71,9 +68,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Address1)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address2)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.City)
@@ -88,19 +82,10 @@
                 @Html.DisplayFor(modelItem => item.HomePhone)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.WorkPhone)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.CellPhone)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FaxNumber)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Notes)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
