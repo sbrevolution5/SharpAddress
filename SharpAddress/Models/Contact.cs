@@ -15,7 +15,7 @@ namespace SharpAddress.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
         [DataType(DataType.Date)]
-        public DateTime Birthday { get; set; }
+        public DateTime? Birthday { get; set; }
         [Display(Name = "Address Line 1")]
         public string Address1 { get; set; }
         [Display(Name ="Address Line 2")]
