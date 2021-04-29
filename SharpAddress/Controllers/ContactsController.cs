@@ -2,21 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MoviePro.Services;
 using SharpAddress.Data;
 using SharpAddress.Models;
+using SharpAddress.Services;
 
 namespace SharpAddress.Controllers
 {
     public class ContactsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IImageService _imageService;
 
-        public ContactsController(ApplicationDbContext context)
+        public ContactsController(ApplicationDbContext context, IImageService imageService)
         {
             _context = context;
+            _imageService = imageService;
         }
 
         // GET: Contacts
@@ -55,10 +60,12 @@ namespace SharpAddress.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Birthday,Address1,Address2,City,State,ZipCode,HomePhone,WorkPhone,CellPhone,FaxNumber,Email,Notes,ProfilePicture,ContentType,CategoryId")] Contact contact)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Birthday,Address1,Address2,City,State,ZipCode,HomePhone,WorkPhone,CellPhone,FaxNumber,Email,Notes,CategoryId")] Contact contact, IFormFile ProfileImage)
         {
             if (ModelState.IsValid)
             {
+                contact.ProfilePicture = _imageService.RecordContentType(ProfileImage);
+                contact.ContentType = await _imageService.EncodeImageAsync(ProfileImage);
                 _context.Add(contact);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

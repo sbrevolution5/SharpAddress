@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MoviePro.Services
+namespace SharpAddress.Services
 {
     public interface IImageService
     {

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace MoviePro.Services
+namespace SharpAddress.Services
 {
     public class BasicImageService : IImageService
     {
