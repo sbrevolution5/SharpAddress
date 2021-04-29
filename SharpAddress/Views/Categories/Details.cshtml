@@ -1,5 +1,6 @@
 ﻿@model SharpAddress.Models.Category
-
+@using SharpAddress.Services
+@inject IImageService _imageService
 @{
     ViewData["Title"] = "Details";
 }
@@ -9,6 +10,7 @@
 <div>
     <h4>Category</h4>
     <hr />
+    <img id="categoryImage" class="img-fluid" src="@_imageService.DecodeImage(Model.CategoryImage, Model.ContentType)" />
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.CategoryName)

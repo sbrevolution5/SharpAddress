@@ -2,21 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SharpAddress.Data;
 using SharpAddress.Models;
+using SharpAddress.Services;
 
 namespace SharpAddress.Controllers
 {
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public CategoriesController(ApplicationDbContext context)
+        private readonly IImageService _imageService;
+        public CategoriesController(ApplicationDbContext context, IImageService imageService)
         {
             _context = context;
+            _imageService = imageService;
         }
 
         // GET: Categories
@@ -54,10 +57,12 @@ namespace SharpAddress.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CategoryName,CategoryDescription,CategoryImage,ContentType")] Category category)
+        public async Task<IActionResult> Create([Bind("Id,CategoryName,CategoryDescription")] Category category, IFormFile CategoryImage)
         {
             if (ModelState.IsValid)
             {
+                category.ContentType = _imageService.RecordContentType(CategoryImage);
+                category.CategoryImage = await _imageService.EncodeImageAsync(CategoryImage);
                 _context.Add(category);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -86,7 +91,7 @@ namespace SharpAddress.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CategoryName,CategoryDescription,CategoryImage,ContentType")] Category category)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CategoryName,CategoryDescription")] Category category, IFormFile NewCategoryImage)
         {
             if (id != category.Id)
             {
@@ -97,6 +102,12 @@ namespace SharpAddress.Controllers
             {
                 try
                 {
+                    if (NewCategoryImage is not null)
+                    {
+                        category.ContentType = _imageService.RecordContentType(NewCategoryImage);
+                        category.CategoryImage = await _imageService.EncodeImageAsync(NewCategoryImage);
+
+                    }
                     _context.Update(category);
                     await _context.SaveChangesAsync();
                 }
