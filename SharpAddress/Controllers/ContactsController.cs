@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MoviePro.Services;
 using SharpAddress.Data;
 using SharpAddress.Models;
 using SharpAddress.Services;
@@ -64,8 +63,8 @@ namespace SharpAddress.Controllers
         {
             if (ModelState.IsValid)
             {
-                contact.ProfilePicture = _imageService.RecordContentType(ProfileImage);
-                contact.ContentType = await _imageService.EncodeImageAsync(ProfileImage);
+                contact.ContentType = _imageService.RecordContentType(ProfileImage);
+                contact.ProfilePicture = await _imageService.EncodeImageAsync(ProfileImage);
                 _context.Add(contact);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
