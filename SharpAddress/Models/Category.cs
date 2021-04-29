@@ -13,7 +13,9 @@ namespace SharpAddress.Models
         public string CategoryName { get; set; }
         [Display(Name = "Category Description")]
         public string CategoryDescription { get; set; }
-        public IEnumerable<Contact> ContactList { get; set; }
-        //TODO: Add images
+        [Display(Name = "Category Image")]
+        public byte[] CategoryImage { get; set; }
+        public string ContentType { get; set; }
+        public ICollection<Contact> ContactList { get; set; } = new HashSet<Contact>();
     }
 }

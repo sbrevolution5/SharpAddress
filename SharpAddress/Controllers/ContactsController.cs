@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using SharpAddress.Data;
 using SharpAddress.Models;
 
-namespace SharpAddress
+namespace SharpAddress.Controllers
 {
     public class ContactsController : Controller
     {
@@ -46,6 +46,7 @@ namespace SharpAddress
         // GET: Contacts/Create
         public IActionResult Create()
         {
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "CategoryName");
             return View();
         }
 
@@ -54,7 +55,7 @@ namespace SharpAddress
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Address1,Address2,City,State,ZipCode,HomePhone,WorkPhone,CellPhone,FaxNumber,Email,ProfilePicture,ContentType,CategoryId")] Contact contact)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Birthday,Address1,Address2,City,State,ZipCode,HomePhone,WorkPhone,CellPhone,FaxNumber,Email,Notes,ProfilePicture,ContentType,CategoryId")] Contact contact)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +63,7 @@ namespace SharpAddress
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "CategoryName");
             return View(contact);
         }
 
@@ -78,6 +80,7 @@ namespace SharpAddress
             {
                 return NotFound();
             }
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "CategoryName", contact.CategoryId);
             return View(contact);
         }
 
@@ -86,7 +89,7 @@ namespace SharpAddress
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Address1,Address2,City,State,ZipCode,HomePhone,WorkPhone,CellPhone,FaxNumber,Email,ProfilePicture,ContentType,CategoryId")] Contact contact)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Birthday,Address1,Address2,City,State,ZipCode,HomePhone,WorkPhone,CellPhone,FaxNumber,Email,Notes,ProfilePicture,ContentType,CategoryId")] Contact contact)
         {
             if (id != contact.Id)
             {
@@ -113,6 +116,7 @@ namespace SharpAddress
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "CategoryName", contact.CategoryId);
             return View(contact);
         }
 
