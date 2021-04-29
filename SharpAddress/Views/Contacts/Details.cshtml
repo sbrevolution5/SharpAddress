@@ -1,5 +1,6 @@
 ﻿@model SharpAddress.Models.Contact
-
+@using SharpAddress.Services
+@inject IImageService _imageService
 @{
     ViewData["Title"] = "Details";
 }
@@ -9,6 +10,7 @@
 <div>
     <h4>Contact</h4>
     <hr />
+    <img id="ProfileImage" class="img-fluid" src="@_imageService.DecodeImage(Model.ProfilePicture, Model.ContentType)" />
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.FirstName)
@@ -97,15 +99,6 @@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ProfilePicture)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProfilePicture)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ContentType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ContentType)
-        </dd>
     </dl>
 </div>
 <div>

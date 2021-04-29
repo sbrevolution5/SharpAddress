@@ -63,6 +63,7 @@ namespace SharpAddress.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 contact.ContentType = _imageService.RecordContentType(ProfileImage);
                 contact.ProfilePicture = await _imageService.EncodeImageAsync(ProfileImage);
                 _context.Add(contact);
@@ -95,7 +96,7 @@ namespace SharpAddress.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Birthday,Address1,Address2,City,State,ZipCode,HomePhone,WorkPhone,CellPhone,FaxNumber,Email,Notes,ProfilePicture,ContentType,CategoryId")] Contact contact)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Birthday,Address1,Address2,City,State,ZipCode,HomePhone,WorkPhone,CellPhone,FaxNumber,Email,Notes,CategoryId")] Contact contact, IFormFile ProfilePicture)
         {
             if (id != contact.Id)
             {
@@ -106,6 +107,12 @@ namespace SharpAddress.Controllers
             {
                 try
                 {
+                    if (ProfilePicture is not null)
+                    {
+
+                        contact.ContentType = _imageService.RecordContentType(ProfilePicture);
+                        contact.ProfilePicture = await _imageService.EncodeImageAsync(ProfilePicture);
+                    }
                     _context.Update(contact);
                     await _context.SaveChangesAsync();
                 }
