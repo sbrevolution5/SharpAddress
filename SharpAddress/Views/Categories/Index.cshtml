@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<SharpAddress.Models.Category>
-
+@using SharpAddress.Services
+@inject IImageService _imageService 
 @{
     ViewData["Title"] = "Index";
 }
@@ -9,33 +10,33 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CategoryName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CategoryDescription)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoryName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoryDescription)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+<div class="row mb-3">
+
+    @foreach (var item in Model)
+    {
+        <div class="col-sm-4 mb-3">
+
+            <div class="card h-100 mb-3 bg-secondary shadow-lg animate__animated animate__bounceIn" style="width:18rem;">
+                <img class="card-img-top img-fluid" src="@_imageService.DecodeImage(item.CategoryImage,item.ContentType)" alt="">
+                <div class="card-body">
+                    <h4 class="card-title">
+                        @Html.DisplayFor(modelItem => item.CategoryName)
+
+                    </h4>
+                    <p class="card-text">
+                        @Html.DisplayFor(modelItem => item.CategoryDescription)
+
+                    </p>
+                </div>
+                <div class="card-footer text-muted">
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </div>
+            </div>
+        </div>
+    }
+
+
+</div>
